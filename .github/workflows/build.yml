@@ -1,0 +1,41 @@
+name: Build
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup repo
+        uses: actions/checkout@v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+
+      - name: Build Windows
+        run: deno compile -A --target x86_64-pc-windows-msvc --output nico-renamer ./main.ts
+
+      - name: Build MacOS
+        run: deno compile -A --target x86_64-apple-darwin --output nico-renamer ./main.ts
+
+      - name: Get current date
+        id: date
+        run: |
+          echo "{date}={$(date +'%Y-%m-%d')}" >> $GITHUB_STATE
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: nightly-${{ env.date }}
+          tag_name: nightly-${{ env.date }}
+          files: |
+            nico-renamer.exe
+            nico-renamer
