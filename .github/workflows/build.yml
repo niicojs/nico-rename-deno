@@ -29,8 +29,8 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          name: ${{ github.sha }}
-          tag_name: ${{ github.sha }}
+          name: ${{ github.event.repository.updated_at}}
+          tag_name: ${{ github.event.repository.updated_at}}
           files: |
             nico-renamer.exe
             nico-renamer
