@@ -29,13 +29,13 @@ jobs:
       - name: Get current date
         id: date
         run: |
-          echo "builddate={$(date +'%Y-%m-%d')}" >> $GITHUB_OUTPUT
+          echo "builddate=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
 
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          name: nightly-${{ steps.version.outputs.builddate }}
-          tag_name: nightly-${{ steps.version.outputs.builddate }}
+          name: nightly-${{ env.builddate }}
+          tag_name: nightly-${{ env.builddate }}
           files: |
             nico-renamer.exe
             nico-renamer
