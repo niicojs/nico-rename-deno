@@ -26,11 +26,16 @@ jobs:
       - name: Build MacOS
         run: deno compile -A --target x86_64-apple-darwin --output nico-renamer ./main.ts
 
+      - name: Get current date
+        id: date
+        run: |
+          echo "{date}={$(date +'%Y-%m-%d')}" >> $GITHUB_STATE
+
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          name: ${{ github.event.repository.updated_at}}
-          tag_name: ${{ github.event.repository.updated_at}}
+          name: nightly-${{ env.date }}
+          tag_name: nightly-${{ env.date }}
           files: |
             nico-renamer.exe
             nico-renamer
