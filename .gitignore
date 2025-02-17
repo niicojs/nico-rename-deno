@@ -1,0 +1,4 @@
+.zig-cache
+zig-out
+rename.csv
+rename.xlsx
