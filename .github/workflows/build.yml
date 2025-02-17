@@ -2,9 +2,7 @@ name: Build
 
 on:
   push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
+    branches: ['main']
 
 permissions:
   contents: write
@@ -20,11 +18,30 @@ jobs:
       - name: Setup Deno
         uses: denoland/setup-deno@v2
 
-      - name: Build Windows
-        run: deno compile -A --target x86_64-pc-windows-msvc --output nico-renamer ./main.ts
+      - name: Build Node Windows
+        run: |
+          cd deno
+          deno compile -A --target x86_64-pc-windows-msvc --output nico-renamer-deno ./main.ts
 
-      - name: Build MacOS
-        run: deno compile -A --target x86_64-apple-darwin --output nico-renamer ./main.ts
+      - name: Build Node MacOS
+        run: |
+          cd deno
+          deno compile -A --target x86_64-apple-darwin --output nico-renamer-deno ./main.ts
+
+      - name: Setup Zig
+        uses: mlugg/setup-zig@v1
+        with:
+          version: master
+
+      - name: Build Zig Windows
+        run: |
+          cd zig
+          zig build --release=safe -Dtarget=x86_64-windows
+
+      - name: Build Zig MacOS
+        run: |
+          cd zig
+          zig build --release=safe -Dtarget=x86_64-macos
 
       - name: Get current date
         id: date
@@ -37,5 +54,7 @@ jobs:
           name: nightly-${{ env.builddate }}
           tag_name: nightly-${{ env.builddate }}
           files: |
-            nico-renamer.exe
-            nico-renamer
+            deno/nico-renamer-deno.exe
+            deno/nico-renamer-deno
+            zig/zig-out/bin/nico-renamer.exe
+            zig/zig-out/bin/nico-renamer
