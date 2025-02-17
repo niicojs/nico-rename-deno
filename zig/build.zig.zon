@@ -24,8 +24,8 @@
     // internet connectivity.
     .dependencies = .{
         .zcsv = .{
-            .url = "git+https://github.com/matthewtolman/zig_csv?ref=main#2d0ccd9e853114853e5e0cf671297d5a1654b01e",
-            .hash = "12206e76339a58db8ba53a67d7161eb4744144709815f7516b83fc51ede86fb6b544",
+            .url = "git+https://github.com/niicojs/zig_csv?ref=patch-1#da31a1562496a117da536d8a40317c6466a6675d",
+            .hash = "1220cfe711b72dd7cc8a780a734fada53d442f96ef25c7a863e0e68f9d714ed8a407",
         },
     },
     .paths = .{
